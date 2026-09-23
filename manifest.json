@@ -1,0 +1,24 @@
+{
+  "name": "Shopvana - Billing App",
+  "short_name": "Shopvana",
+  "description": "Shop billing app for shops",
+  "start_url": "/Shopvana/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#007bff",
+  "theme_color": "#007bff",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
