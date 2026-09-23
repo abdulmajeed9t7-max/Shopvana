@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Billing App</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ LOADING ============ -->
+<div id="loading" class="loading-screen">
+  <div class="spinner"></div>
+  <p>Loading...</p>
+</div>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="loginScreen" class="auth-screen" style="display:none;">
+  <div class="auth-box">
+    <h1>🏪 Shop App</h1>
+    <p class="subtitle">Apni shop manage karo</p>
+
+    <div class="auth-tabs">
+      <button id="loginTabBtn" class="active" onclick="switchAuth('login')">Login</button>
+      <button id="signupTabBtn" onclick="switchAuth('signup')">Sign Up</button>
+    </div>
+
+    <div id="loginForm">
+      <input id="loginUser" placeholder="Username">
+      <input id="loginPass" type="password" placeholder="Password">
+      <button class="primary-btn" onclick="doLogin()">🔓 Login</button>
+    </div>
+
+    <div id="signupForm" style="display:none;">
+      <input id="signupShop" placeholder="Shop ka naam">
+      <input id="signupUser" placeholder="Username">
+      <input id="signupPass" type="password" placeholder="Password">
+      <button class="primary-btn" onclick="doSignup()">✅ Sign Up</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MAIN APP ============ -->
+<div id="mainApp" style="display:none;">
+
+  <div class="header">
+    <h2 id="headerShopName">🏪 Meri Shop</h2>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab('billing')" class="active">🧾 Billing</button>
+    <button onclick="showTab('items')">📦 Items</button>
+    <button onclick="showTab('settings')">⚙️ Settings</button>
+  </div>
+
+  <div id="billing" class="section active">
+    <h2>Bill Banao</h2>
+    <div class="input-row">
+      <input list="itemList" id="itemName" placeholder="Item name likho...">
+      <datalist id="itemList"></datalist>
+      <input type="number" id="qty" placeholder="Qty" min="1" value="1">
+      <button onclick="addToBill()">➕ Add</button>
+    </div>
+    <table id="billTable">
+      <thead>
+        <tr><th>Item</th><th>Rate</th><th>Qty</th><th>Total</th><th></th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="grand-total">
+      <strong>Grand Total: Rs <span id="grandTotal">0</span></strong>
+    </div>
+    <div class="actions">
+      <button onclick="printBill()">🖨️ Print Slip</button>
+      <button onclick="clearBill()" class="danger">🗑️ Clear</button>
+    </div>
+  </div>
+
+  <div id="items" class="section">
+    <h2>Items List</h2>
+    <div class="input-row">
+      <input id="newItemName" placeholder="Item ka naam">
+      <input type="number" id="newItemRate" placeholder="Rate (Rs)">
+      <button onclick="saveItem()">💾 Save</button>
+    </div>
+    <table id="itemsTable">
+      <thead>
+        <tr><th>Item</th><th>Rate</th><th></th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="settings" class="section">
+    <h2>⚙️ Shop Settings</h2>
+    <div class="settings-box">
+      <label>🏪 Shop ka Naam</label>
+      <input id="setShopName" placeholder="Meri Shop">
+      <label>📍 Address</label>
+      <input id="setShopAddress" placeholder="Shop ka address">
+      <label>📞 Phone Number</label>
+      <input id="setShopPhone" placeholder="03xx-xxxxxxx">
+      <label>🧾 Slip Footer Message</label>
+      <input id="setSlipFooter" placeholder="Shukriya! Dobara aayen">
+      <button class="primary-btn" onclick="saveSettings()">💾 Settings Save Karo</button>
+    </div>
+    <div class="danger-box">
+      <h3>⚠️ Danger Zone</h3>
+      <button class="danger" onclick="resetAllData()">🗑️ Poora Data Delete Karo</button>
+    </div>
+  </div>
+
+</div>
+
+<div id="printArea" style="display:none;"></div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
