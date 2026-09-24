@@ -1,0 +1,9 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.vana.shopmanager",
+        "sha256_cert_fingerprints": ["48:AE:09:D7:53:0F:C9:D3:0B:CB:86:F7:A9:B8:16:DB:0F:E1:12:49:A7:62:EC:27:60:8F:1E:E2:FC:0A:A9:8F"]
+      }
+    }]
+
