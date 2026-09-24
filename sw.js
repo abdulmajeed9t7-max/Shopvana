@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shopvana-v1';
+const CACHE_NAME = 'shopvana-v2';
 const urlsToCache = [
   '/Shopvana/',
   '/Shopvana/index.html',
