@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shopvana-v10';
+const CACHE_NAME = 'shopvana-v11';
 
 self.addEventListener('install', event => {
   self.skipWaiting();
