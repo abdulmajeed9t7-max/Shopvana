@@ -100,6 +100,19 @@ th { background: #007bff; color: white; font-size: 11px; }
 .add-item-row input, .add-item-row select { flex: 1 1 80px; min-width: 0; padding: 9px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
 .add-item-row button { padding: 9px 14px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; flex-shrink: 0; }
 
+/* ITEM SUGGESTIONS (YouTube Style) */
+.item-suggest-wrapper { position: relative; flex: 2 1 120px; min-width: 0; }
+.item-suggest-wrapper input { width: 100%; padding: 9px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
+.item-suggest-list { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #007bff; border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: none; }
+.item-suggest-list.show { display: block; }
+.item-suggest-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 13px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.item-suggest-item:active { background: #e7f3ff; }
+.item-suggest-item .iname { font-weight: bold; color: #333; }
+.item-suggest-item .irate { color: #28a745; font-weight: bold; font-size: 12px; }
+.item-suggest-item .istock { color: #888; font-size: 11px; }
+.item-suggest-item.low-stock .istock { color: #dc3545; }
+.item-suggest-item.no-match { color: #888; cursor: default; justify-content: center; }
+
 .bill-total-row { display: flex; justify-content: space-between; padding: 10px; background: #f0f7ff; border: 2px solid #007bff; border-radius: 6px; margin-top: 8px; font-size: 15px; font-weight: bold; color: #007bff; width: 100%; box-sizing: border-box; }
 .balance-box { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 12px; margin-top: 10px; width: 100%; box-sizing: border-box; }
 .balance-box .row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; flex-wrap: wrap; gap: 5px; align-items: center; }
@@ -108,8 +121,8 @@ th { background: #007bff; color: white; font-size: 11px; }
 .final-balance { background: #dc3545; color: white; padding: 12px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; font-size: 15px; font-weight: bold; width: 100%; box-sizing: border-box; flex-wrap: wrap; gap: 5px; }
 .final-balance.paid { background: #28a745; }
 
-.bill-actions { display: flex; gap: 8px; margin-top: 12px; width: 100%; box-sizing: border-box; }
-.bill-actions button { flex: 1; min-width: 0; }
+.bill-actions { display: flex; gap: 6px; margin-top: 12px; width: 100%; box-sizing: border-box; flex-wrap: wrap; }
+.bill-actions button { flex: 1 1 90px; min-width: 0; padding: 11px 8px; font-size: 12px; }
 
 .customer-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; flex-wrap: wrap; }
 .customer-item .info { flex: 1 1 150px; min-width: 0; cursor: pointer; }
@@ -142,7 +155,7 @@ th { background: #007bff; color: white; font-size: 11px; }
 
 .settings-box { background: white; padding: 18px; border-radius: 12px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
 .settings-box label { display: block; font-size: 12px; font-weight: bold; color: #555; margin-bottom: 5px; margin-top: 12px; }
-.settings-box input, .settings-box select, .settings-box textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; box-sizing: border-box; font-family: Arial, sans-serif; }
+.settings-box input, .settings-box select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; box-sizing: border-box; }
 
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
 .stat-card { background: white; padding: 15px 10px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -199,21 +212,18 @@ th { background: #007bff; color: white; font-size: 11px; }
     <div class="browser-address" id="browserAddress">🏪 Home</div>
     <button class="nav-btn" onclick="closeCurrentTab()">✕</button>
   </div>
-
   <div class="tabs-bar" id="browserTabs"></div>
-
   <div class="header">
     <h2 id="headerShopName">🏪 Meri Dukan</h2>
     <button class="logout-btn" onclick="doLogout()">Logout</button>
   </div>
-
   <div class="quick-nav">
     <button onclick="openTab('dashboard')" class="active">📊 Home</button>
     <button onclick="openTab('billing')">🧾 Bill</button>
     <button onclick="openTab('items')">📦 Items</button>
     <button onclick="openTab('stock')">📥 Stock</button>
     <button onclick="openTab('customers')">👥 Customers</button>
-    <button onclick="openTab('settings')">⚙️ Settings</button>
+    <button onclick="openTab('settings')">⚙️</button>
   </div>
 
   <div id="dashboard" class="section active">
@@ -240,7 +250,6 @@ th { background: #007bff; color: white; font-size: 11px; }
           <small style="color:#888; font-size:11px;" id="billDate">--/--/--</small>
         </div>
       </div>
-
       <div class="bill-info-row">
         <label>Name:</label>
         <div class="name-wrapper">
@@ -249,30 +258,27 @@ th { background: #007bff; color: white; font-size: 11px; }
         </div>
         <button class="view-bills-btn" id="viewBillsBtn" style="display:none;" onclick="viewCustomerBills()">📜 Bills</button>
       </div>
-
       <div id="balanceAlert" style="display:none; background:#fff3cd; border:2px solid #ffc107; padding:10px; border-radius:8px; margin-top:10px; font-size:12px; width:100%; box-sizing:border-box;">
         ⚠️ <strong id="alertCustName">Customer</strong> ka purana bakaya: <strong style="color:#dc3545;">Rs <span id="prevBalance">0</span></strong>
       </div>
-
       <table class="bill-table">
         <thead>
           <tr><th>Qty</th><th>Particulars</th><th>Rate</th><th>Amount</th></tr>
         </thead>
         <tbody id="billTableBody"></tbody>
       </table>
-
       <div class="add-item-row">
         <input type="number" id="newQty" placeholder="Qty" step="0.01" style="flex: 1 1 60px;">
-        <input type="text" id="newParticular" placeholder="Item name" list="itemNamesList" style="flex: 2 1 120px;" oninput="onItemNameInput()">
-        <datalist id="itemNamesList"></datalist>
+        <div class="item-suggest-wrapper">
+          <input type="text" id="newParticular" placeholder="Item name" autocomplete="off" oninput="showItemSuggestions()">
+          <div class="item-suggest-list" id="itemSuggestList"></div>
+        </div>
         <button onclick="addBillItem()">➕</button>
       </div>
-
       <div class="bill-total-row">
         <span>Total Amount:</span>
         <span>Rs <span id="billAmount">0</span></span>
       </div>
-
       <div class="balance-box">
         <div class="row"><span>Aaj ka Bill:</span><span>Rs <span id="subTotal">0</span></span></div>
         <div class="row"><span>Purana Bakaya:</span><span>Rs <span id="prevBalDisplay">0</span></span></div>
@@ -282,14 +288,14 @@ th { background: #007bff; color: white; font-size: 11px; }
           <input type="number" id="paidAmount" placeholder="0" value="0" step="0.01" oninput="updateBillSummary()">
         </div>
       </div>
-
       <div class="final-balance" id="finalBalanceBox">
         <span>🔴 Naya Bakaya:</span>
         <span>Rs <span id="newBalance">0</span></span>
       </div>
-
       <div class="bill-actions">
-        <button class="primary-btn" style="background:#28a745;" onclick="saveBill()">💾 Save & Print</button>
+        <button class="primary-btn" style="background:#28a745;" onclick="saveBill()">💾 Save</button>
+        <button class="primary-btn" style="background:#25D366;" onclick="shareBillWhatsApp()">📤 WhatsApp</button>
+        <button class="primary-btn" style="background:#007bff;" onclick="printBillNow()">🖨️ Print</button>
         <button class="primary-btn" style="background:#dc3545;" onclick="clearBill()">🗑️ Clear</button>
       </div>
     </div>
@@ -319,34 +325,23 @@ th { background: #007bff; color: white; font-size: 11px; }
   <div id="stock" class="section">
     <h2>📥 Naya Stock Aaya</h2>
     <p style="font-size:12px; color:#666; margin-bottom:10px;">💡 Stock aane ka poora record rakho</p>
-    
     <div class="settings-box">
       <label>📦 Item Select Karo</label>
-      <select id="stockItem">
-        <option value="">-- Item Select Karo --</option>
-      </select>
-      
+      <select id="stockItem"><option value="">-- Item Select Karo --</option></select>
       <label>📊 Kitna Stock Aaya? (Quantity)</label>
       <input type="number" id="stockQty" placeholder="e.g. 100" step="0.01">
-      
       <label>💰 Purchase Rate (Rs)</label>
       <input type="number" id="stockRate" placeholder="e.g. 250" step="0.01">
-      
       <label>👤 Supplier / Party ka Naam</label>
       <input id="stockSupplier" placeholder="e.g. Karachi Traders">
-      
       <label>🧾 Bill Number</label>
       <input id="stockBillNo" placeholder="e.g. 1234">
-      
       <label>📅 Date</label>
       <input type="date" id="stockDate">
-      
       <label>📝 Note (Optional)</label>
       <input id="stockNote" placeholder="Koi note likho...">
-      
       <button class="primary-btn" onclick="saveStockEntry()" style="background:#28a745;">💾 Stock Add Karo</button>
     </div>
-    
     <h2 style="margin-top:20px;">📜 Stock History</h2>
     <div id="stockHistoryList"></div>
   </div>
@@ -396,6 +391,7 @@ th { background: #007bff; color: white; font-size: 11px; }
 
 <div id="printArea" style="display:none;"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -520,7 +516,6 @@ function renderAll() {
   renderDashboard();
   renderItems();
   renderCustomers();
-  renderItemNamesList();
   renderStockItemDropdown();
   renderStockHistory();
   setStockDateDefault();
@@ -550,12 +545,6 @@ function renderItems() {
     const low = item.stock < 5 ? 'style="color:#dc3545;font-weight:bold;"' : '';
     tb.innerHTML += `<tr><td>${item.name}</td><td>Rs ${item.rate}</td><td ${low}>${item.stock} ${item.unit}</td><td><button class="danger" onclick="deleteItem(${i})">X</button></td></tr>`;
   });
-}
-
-function renderItemNamesList() {
-  const dl = document.getElementById('itemNamesList');
-  dl.innerHTML = '';
-  items.forEach(i => dl.innerHTML += `<option value="${i.name}">`);
 }
 
 function renderCustomers() {
@@ -650,14 +639,57 @@ document.addEventListener('click', (e) => {
     const al = document.getElementById('autocompleteList');
     if (al) al.classList.remove('show');
   }
+  if (!e.target.closest('.item-suggest-wrapper')) {
+    const l = document.getElementById('itemSuggestList');
+    if (l) l.classList.remove('show');
+  }
 });
 
-window.onItemNameInput = () => {
-  const name = document.getElementById('newParticular').value.trim();
-  const found = items.find(i => i.name.toLowerCase() === name.toLowerCase());
-  if (found) {
-    document.getElementById('newQty').focus();
+// YOUTUBE STYLE ITEM SUGGESTIONS
+window.showItemSuggestions = () => {
+  const input = document.getElementById('newParticular');
+  const list = document.getElementById('itemSuggestList');
+  if (!input || !list) return;
+  
+  const query = input.value.trim().toLowerCase();
+  
+  if (query.length === 0) {
+    list.classList.remove('show');
+    list.innerHTML = '';
+    return;
   }
+  
+  const queryWords = query.split(/\s+/).filter(w => w.length > 0);
+  
+  const matches = items.filter(i => {
+    const itemName = i.name.toLowerCase();
+    return queryWords.every(word => itemName.includes(word));
+  });
+  
+  if (matches.length === 0) {
+    list.innerHTML = '<div class="item-suggest-item no-match">❌ Koi item nahi mila</div>';
+    list.classList.add('show');
+    return;
+  }
+  
+  list.innerHTML = '';
+  matches.forEach(i => {
+    const lowClass = i.stock < 5 ? 'low-stock' : '';
+    list.innerHTML += `<div class="item-suggest-item ${lowClass}" onclick="selectItemFromSuggest('${i.name.replace(/'/g, "\\'")}')">
+      <span class="iname">📦 ${i.name}</span>
+      <span>
+        <span class="irate">Rs ${i.rate}</span>
+        <span class="istock"> | ${i.stock} ${i.unit}</span>
+      </span>
+    </div>`;
+  });
+  list.classList.add('show');
+};
+
+window.selectItemFromSuggest = (name) => {
+  document.getElementById('newParticular').value = name;
+  document.getElementById('itemSuggestList').classList.remove('show');
+  document.getElementById('newQty').focus();
 };
 
 window.addBillItem = () => {
@@ -670,6 +702,7 @@ window.addBillItem = () => {
   currentBill.push({ name: found.name, qty, rate: found.rate, unit: found.unit, total: qty * found.rate });
   document.getElementById('newQty').value = '';
   document.getElementById('newParticular').value = '';
+  document.getElementById('itemSuggestList').classList.remove('show');
   renderBillTable();
   updateBillSummary();
 };
@@ -716,6 +749,51 @@ window.updateBillSummary = () => {
   }
 };
 
+// ============ BILL HTML GENERATOR ============
+function generateSlipHTML(bill) {
+  let rows = '';
+  bill.items.forEach(it => {
+    rows += `<tr>
+      <td style="padding:4px; border:1px solid #999;">${it.qty}</td>
+      <td style="padding:4px; border:1px solid #999;">${it.name}</td>
+      <td style="padding:4px; border:1px solid #999;">${it.rate}</td>
+      <td style="padding:4px; border:1px solid #999; text-align:right;">${it.total.toFixed(2)}</td>
+    </tr>`;
+  });
+  return `
+    <div style="background:#fff; padding:15px; font-family:'Courier New',monospace; color:#000; width:100%; box-sizing:border-box;">
+      <h2 style="text-align:center; margin-bottom:3px; font-size:18px;">🏪 ${settings.shopName}</h2>
+      <div style="text-align:center; font-size:11px; margin-bottom:8px; color:#555;">
+        ${settings.shopSub ? settings.shopSub + '<br>' : ''}
+        ${settings.address ? settings.address + '<br>' : ''}
+        ${settings.phone ? '📞 ' + settings.phone + '<br>' : ''}
+      </div>
+      <div style="border-top:2px dashed #000; margin:8px 0;"></div>
+      <p style="font-size:12px; margin:4px 0;"><b>Bill #:</b> ${String(bill.billNo).padStart(4, '0')} &nbsp;&nbsp; <b>Date:</b> ${new Date(bill.date).toLocaleDateString()}</p>
+      <p style="font-size:12px; margin:4px 0;"><b>Name:</b> ${bill.customerName}</p>
+      <div style="border-top:2px dashed #000; margin:8px 0;"></div>
+      <table style="width:100%; font-size:12px; border-collapse:collapse;">
+        <tr style="background:#007bff; color:white;">
+          <th style="padding:5px; text-align:left; border:1px solid #999;">Qty</th>
+          <th style="padding:5px; text-align:left; border:1px solid #999;">Particulars</th>
+          <th style="padding:5px; text-align:left; border:1px solid #999;">Rate</th>
+          <th style="padding:5px; text-align:right; border:1px solid #999;">Amount</th>
+        </tr>
+        ${rows}
+      </table>
+      <div style="border-top:2px dashed #000; margin:8px 0;"></div>
+      <p style="text-align:right; font-size:12px; margin:3px 0;">Aaj ka Bill: Rs ${bill.subtotal.toFixed(2)}</p>
+      ${bill.previousBalance > 0 ? `<p style="text-align:right; font-size:12px; margin:3px 0;">Purana Bakaya: Rs ${bill.previousBalance.toFixed(2)}</p>` : ''}
+      <p style="text-align:right; font-size:14px; margin:3px 0;"><b>Total: Rs ${bill.total.toFixed(2)}</b></p>
+      <p style="text-align:right; font-size:12px; margin:3px 0; color:#28a745;">Jama: Rs ${bill.paid.toFixed(2)}</p>
+      <p style="text-align:right; font-size:14px; margin:3px 0; color:#dc3545;"><b>Bakaya: Rs ${bill.newBalance.toFixed(2)}</b></p>
+      <div style="border-top:2px dashed #000; margin:8px 0;"></div>
+      <p style="text-align:center; font-size:11px; color:#666; margin-top:8px;">${settings.slipFooter || 'Shukriya!'}</p>
+    </div>
+  `;
+}
+
+// ============ SAVE BILL ============
 window.saveBill = async () => {
   const name = document.getElementById('billCustomerName').value.trim();
   if (!name) return alert('Customer ka naam likho!');
@@ -767,43 +845,110 @@ window.clearBill = () => {
   updateBillSummary();
 };
 
+// ============ PRINT ============
+window.printBillNow = () => {
+  const name = document.getElementById('billCustomerName').value.trim();
+  if (!name) return alert('Customer ka naam likho!');
+  if (currentBill.length === 0) return alert('Koi item add karo!');
+  const subtotal = currentBill.reduce((s, b) => s + b.total, 0);
+  const prevBal = selectedCustomer ? (selectedCustomer.balance || 0) : 0;
+  const total = subtotal + prevBal;
+  const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
+  const newBal = total - paid;
+  const tempBill = {
+    billNo: billCounter, date: new Date().toISOString(),
+    customerName: name, items: currentBill,
+    subtotal, previousBalance: prevBal, total, paid, newBalance: newBal
+  };
+  printBill(tempBill);
+};
+
 function printBill(bill) {
-  let rows = '';
-  bill.items.forEach(it => {
-    rows += `<tr><td>${it.qty}</td><td>${it.name}</td><td>${it.rate}</td><td>${it.total.toFixed(2)}</td></tr>`;
-  });
-  const html = `
-    <div class="slip">
-      <h3>🏪 ${settings.shopName}</h3>
-      <div class="info">
-        ${settings.shopSub ? settings.shopSub + '<br>' : ''}
-        ${settings.address ? settings.address + '<br>' : ''}
-        ${settings.phone ? '📞 ' + settings.phone + '<br>' : ''}
-      </div>
-      <div class="line"></div>
-      <p><b>Bill #:</b> ${String(bill.billNo).padStart(4, '0')} &nbsp; <b>Date:</b> ${new Date(bill.date).toLocaleDateString()}</p>
-      <p><b>Name:</b> ${bill.customerName}</p>
-      <div class="line"></div>
-      <table>
-        <tr><th>Qty</th><th>Particulars</th><th>Rate</th><th>Amount</th></tr>
-        ${rows}
-      </table>
-      <div class="line"></div>
-      <p style="text-align:right;">Aaj ka Bill: Rs ${bill.subtotal.toFixed(2)}</p>
-      ${bill.previousBalance > 0 ? `<p style="text-align:right;">Purana Bakaya: Rs ${bill.previousBalance.toFixed(2)}</p>` : ''}
-      <p style="text-align:right;"><b>Total: Rs ${bill.total.toFixed(2)}</b></p>
-      <p style="text-align:right;">Jama: Rs ${bill.paid.toFixed(2)}</p>
-      <p style="text-align:right;"><b>Bakaya: Rs ${bill.newBalance.toFixed(2)}</b></p>
-      <div class="line"></div>
-      <p style="text-align:center;font-size:11px;">${settings.slipFooter}</p>
-    </div>
-  `;
+  const html = generateSlipHTML(bill);
   document.getElementById('printArea').innerHTML = html;
   document.getElementById('printArea').style.display = 'block';
   window.print();
   setTimeout(() => document.getElementById('printArea').style.display = 'none', 500);
 }
 
+// ============ WHATSAPP IMAGE SHARE ============
+window.shareBillWhatsApp = async () => {
+  const name = document.getElementById('billCustomerName').value.trim();
+  if (!name) return alert('Customer ka naam likho!');
+  if (currentBill.length === 0) return alert('Koi item add karo!');
+  
+  const subtotal = currentBill.reduce((s, b) => s + b.total, 0);
+  const prevBal = selectedCustomer ? (selectedCustomer.balance || 0) : 0;
+  const total = subtotal + prevBal;
+  const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
+  const newBal = total - paid;
+  
+  const tempBill = {
+    billNo: billCounter, date: new Date().toISOString(),
+    customerName: name, items: currentBill,
+    subtotal, previousBalance: prevBal, total, paid, newBalance: newBal
+  };
+  
+  const loadingDiv = document.createElement('div');
+  loadingDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);color:white;display:flex;align-items:center;justify-content:center;z-index:99999;font-size:16px;flex-direction:column;gap:10px;';
+  loadingDiv.innerHTML = '<div style="font-size:40px;">⏳</div><div>Bill image ban rahi hai...</div>';
+  document.body.appendChild(loadingDiv);
+  
+  try {
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed; left:-9999px; top:0; width:400px; background:#ffffff; padding:0; box-sizing:border-box;';
+    container.innerHTML = generateSlipHTML(tempBill);
+    document.body.appendChild(container);
+    
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false
+    });
+    
+    document.body.removeChild(container);
+    
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/png', 1.0));
+    const file = new File([blob], `Bill-${tempBill.billNo}.png`, { type: 'image/png' });
+    
+    document.body.removeChild(loadingDiv);
+    
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: `Bill #${tempBill.billNo}`,
+          text: `${settings.shopName} - Bill for ${name}`
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          downloadImage(blob, tempBill.billNo);
+        }
+      }
+    } else {
+      downloadImage(blob, tempBill.billNo);
+    }
+  } catch (e) {
+    console.error(e);
+    if (document.body.contains(loadingDiv)) document.body.removeChild(loadingDiv);
+    alert('❌ Image banane mein error: ' + e.message);
+  }
+};
+
+function downloadImage(blob, billNo) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Bill-${billNo}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  alert('✅ Bill image download ho gayi!\n\n📱 Ab WhatsApp kholo → Chat select karo → 📎 → Gallery → Image bhejo.');
+}
+
+// ============ CUSTOMER BILLS PAGE ============
 function renderCustomerBillsPage(i) {
   const c = customers[i];
   document.getElementById('cbpName').textContent = '👤 ' + c.name;
@@ -846,6 +991,7 @@ function renderCustomerBillsPage(i) {
   }
 }
 
+// ============ ITEMS ============
 window.saveItem = async () => {
   const name = document.getElementById('newItemName').value.trim();
   const rate = parseFloat(document.getElementById('newItemRate').value);
@@ -875,6 +1021,7 @@ window.deleteItem = async (i) => {
   renderAll();
 };
 
+// ============ CUSTOMERS ============
 window.saveCustomer = async () => {
   const name = document.getElementById('newCustomerName').value.trim();
   const phone = document.getElementById('newCustomerPhone').value.trim();
@@ -897,6 +1044,7 @@ window.deleteCustomer = async (i) => {
   renderAll();
 };
 
+// ============ SETTINGS ============
 window.saveSettings = async () => {
   settings.shopName = document.getElementById('setShopName').value.trim() || 'Meri Dukan';
   settings.shopSub = document.getElementById('setShopSub').value.trim();
@@ -928,7 +1076,7 @@ window.saveStockEntry = async () => {
   };
   stockEntries.push(entry);
   items[itemIdx].stock = (items[itemIdx].stock || 0) + qty;
-if (rate > 0) items[itemIdx].rate = rate;
+  if (rate > 0) items[itemIdx].rate = rate;
   await saveUserData();
   document.getElementById('stockItem').value = '';
   document.getElementById('stockQty').value = '';
@@ -941,7 +1089,7 @@ if (rate > 0) items[itemIdx].rate = rate;
   renderItems();
   renderStockItemDropdown();
   renderDashboard();
-  alert('✅ Stock add ho gaya! ' + itemName + ' mein ' + qty + ' add kiye.');
+  alert('✅ Stock add ho gaya!');
 };
 
 function renderStockItemDropdown() {
