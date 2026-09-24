@@ -928,6 +928,7 @@ window.saveStockEntry = async () => {
   };
   stockEntries.push(entry);
   items[itemIdx].stock = (items[itemIdx].stock || 0) + qty;
+if (rate > 0) items[itemIdx].rate = rate;
   await saveUserData();
   document.getElementById('stockItem').value = '';
   document.getElementById('stockQty').value = '';
