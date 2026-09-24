@@ -1,24 +1,60 @@
 {
-  "name": "Shopvana - Billing App",
-  "short_name": "Shopvana",
-  "description": "Shop billing app for shops",
+  "name": "Shop Manager Pro - Billing App",
+  "short_name": "ShopManager",
+  "description": "Complete shop billing app with inventory, customer ledger, stock management and cloud sync. Perfect for shops, stores and businesses.",
   "start_url": "/Shopvana/",
+  "scope": "/Shopvana/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#007bff",
   "theme_color": "#007bff",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "finance"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Naya Bill",
+      "short_name": "Bill",
+      "url": "/Shopvana/?page=billing",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Items List",
+      "short_name": "Items",
+      "url": "/Shopvana/?page=items",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Stock Entry",
+      "short_name": "Stock",
+      "url": "/Shopvana/?page=stock",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
