@@ -9,9 +9,47 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-html { width: 100%; max-width: 100%; overflow-x: hidden; }
-body { background: #f0f2f5; padding: 10px; min-height: 100vh; width: 100%; max-width: 100%; margin: 0 auto; overflow-x: hidden; }
-#mainApp, #loginScreen, #loading, .section { width: 100%; max-width: 100%; }
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+body {
+  background: #f0f2f5;
+  padding: 8px;
+  min-height: 100vh;
+  margin: 0;
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+#mainApp, #loginScreen, #loading {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+.section, .bill-sheet, .browser-bar, .tabs-bar, .header, .tabs, .input-row, .bill-info-row, .balance-box, .bill-total-row, .final-balance {
+  width: 100%;
+  max-width: 100%;
+}
+.input-row > *, .bill-info-row > *, .tabs > * {
+  min-width: 0;
+}
+table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+.bill-table {
+  table-layout: fixed;
+}
+.bill-table th, .bill-table td {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; color: #007bff; }
 .spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top-color: #007bff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
@@ -115,16 +153,36 @@ body { background: #f0f2f5; padding: 10px; min-height: 100vh; width: 100%; max-w
 .header h2 { font-size: 16px; color: #007bff; }
 .logout-btn { padding: 7px 12px; background: #dc3545; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: bold; }
 
-.tabs { display: flex; gap: 4px; margin-bottom: 12px; overflow-x: auto; }
-.tabs button { flex: 1; min-width: 70px; padding: 10px 5px; border: none; background: #ddd; border-radius: 8px; font-size: 12px; font-weight: bold; white-space: nowrap; }
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  max-width: 100%;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button {
+  flex: 0 0 auto;
+  min-width: 65px;
+  padding: 10px 8px;
+  border: none;
+  background: #ddd;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 .tabs button.active { background: #007bff; color: white; }
 
-.section { display: none; }
+.section { display: none; width: 100%; max-width: 100%; overflow-x: hidden; }
 .section.active { display: block; }
 h2 { margin-bottom: 10px; color: #333; font-size: 17px; }
 
-.input-row { display: flex; gap: 5px; margin-bottom: 12px; flex-wrap: wrap; }
-.input-row input, .input-row select { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; min-width: 80px; font-size: 14px; }
+.input-row input, .input-row select { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; min-width: 0; font-size: 14px; }
 .input-row button { padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; }
 
 table { width: 100%; background: white; border-collapse: collapse; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
