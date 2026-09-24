@@ -8,32 +8,14 @@
 <meta name="theme-color" content="#007bff">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
-* { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
-  font-family: Arial, sans-serif; 
-  -webkit-tap-highlight-color: transparent; 
-}
-html, body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-body {
-  background: #f0f2f5;
-  padding: 8px;
-  min-height: 100vh;
-  font-size: 14px;
-  -webkit-text-size-adjust: 100%;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+body { background: #f0f2f5; padding: 8px; min-height: 100vh; font-size: 14px; -webkit-text-size-adjust: 100%; }
 
-/* ============ LOADING ============ */
 .loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; color: #007bff; }
 .spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top-color: #007bff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ============ LOGIN ============ */
 .auth-screen { display: flex; align-items: center; justify-content: center; min-height: 90vh; width: 100%; }
 .auth-box { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); width: 100%; max-width: 380px; }
 .auth-box h1 { text-align: center; margin-bottom: 5px; color: #007bff; }
@@ -44,139 +26,39 @@ body {
 .auth-box input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
 .primary-btn { width: 100%; padding: 13px; background: #007bff; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; margin-top: 5px; }
 
-/* ============ MAIN APP ============ */
 #mainApp { width: 100%; max-width: 100%; overflow-x: hidden; display: none; }
 
-/* BROWSER BAR */
-.browser-bar {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: white;
-  padding: 8px;
-  border-radius: 10px 10px 0 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-  width: 100%;
-  box-sizing: border-box;
-}
-.nav-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #f0f2f5;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+.browser-bar { display: flex; align-items: center; gap: 5px; background: white; padding: 8px; border-radius: 10px 10px 0 0; box-shadow: 0 2px 5px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
+.nav-btn { width: 34px; height: 34px; border-radius: 50%; background: #f0f2f5; border: none; font-size: 16px; font-weight: bold; color: #333; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .nav-btn:active { background: #007bff; color: white; }
 .nav-btn:disabled { opacity: 0.3; }
-.browser-address {
-  flex: 1;
-  min-width: 0;
-  background: #f0f2f5;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.browser-address { flex: 1; min-width: 0; background: #f0f2f5; padding: 8px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: #333; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* TABS BAR */
-.tabs-bar {
-  display: flex;
-  gap: 4px;
-  background: #e8eaed;
-  padding: 6px 8px 0 8px;
-  overflow-x: auto;
-  border-radius: 0 0 10px 10px;
-  margin-bottom: 10px;
-  min-height: 38px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
-  box-sizing: border-box;
-}
+.tabs-bar { display: flex; gap: 4px; background: #e8eaed; padding: 6px 8px 0 8px; overflow-x: auto; border-radius: 0 0 10px 10px; margin-bottom: 10px; min-height: 38px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; box-sizing: border-box; }
 .tabs-bar::-webkit-scrollbar { display: none; }
-.browser-tab {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 10px;
-  background: #d0d3d8;
-  border-radius: 8px 8px 0 0;
-  font-size: 12px;
-  font-weight: bold;
-  color: #555;
-  white-space: nowrap;
-  min-width: 70px;
-  max-width: 130px;
-  flex-shrink: 0;
-}
+.browser-tab { display: flex; align-items: center; gap: 6px; padding: 7px 10px; background: #d0d3d8; border-radius: 8px 8px 0 0; font-size: 12px; font-weight: bold; color: #555; white-space: nowrap; min-width: 70px; max-width: 130px; flex-shrink: 0; }
 .browser-tab.active { background: white; color: #007bff; }
 .browser-tab .tab-title { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
-.browser-tab .tab-close {
-  background: transparent;
-  border: none;
-  font-size: 14px;
-  color: #888;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.browser-tab .tab-close { background: transparent; border: none; font-size: 14px; color: #888; width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
 .browser-tab .tab-close:active { background: #dc3545; color: white; }
 
-/* HEADER */
-.header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: 100%; box-sizing: border-box; }
-.header h2 { font-size: 15px; color: #007bff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: 100%; box-sizing: border-box; gap: 8px; }
+.header h2 { font-size: 15px; color: #007bff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
 .logout-btn { padding: 7px 12px; background: #dc3545; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: bold; flex-shrink: 0; }
 
-/* QUICK NAV */
-.quick-nav {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
-  box-sizing: border-box;
-  padding-bottom: 2px;
-}
+.quick-nav { display: flex; gap: 4px; margin-bottom: 12px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; box-sizing: border-box; padding-bottom: 2px; }
 .quick-nav::-webkit-scrollbar { display: none; }
-.quick-nav button {
-  flex: 0 0 auto;
-  min-width: 68px;
-  padding: 10px 8px;
-  border: none;
-  background: #ddd;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: bold;
-  white-space: nowrap;
-}
+.quick-nav button { flex: 0 0 auto; min-width: 68px; padding: 10px 8px; border: none; background: #ddd; border-radius: 8px; font-size: 11px; font-weight: bold; white-space: nowrap; }
 .quick-nav button.active { background: #007bff; color: white; }
 
-/* SECTIONS */
 .section { display: none; width: 100%; max-width: 100%; overflow-x: hidden; box-sizing: border-box; }
 .section.active { display: block; }
 h2 { margin-bottom: 10px; color: #333; font-size: 16px; }
 
-/* INPUT ROW */
 .input-row { display: flex; gap: 5px; margin-bottom: 12px; flex-wrap: wrap; width: 100%; box-sizing: border-box; }
 .input-row input, .input-row select { flex: 1 1 100px; min-width: 0; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
 .input-row button { padding: 10px 14px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; flex-shrink: 0; font-size: 13px; }
 
-/* TABLES */
 table { width: 100%; max-width: 100%; background: white; border-collapse: collapse; border-radius: 8px; overflow: hidden; margin-bottom: 10px; box-sizing: border-box; table-layout: fixed; }
 th, td { padding: 8px 5px; text-align: left; border-bottom: 1px solid #eee; font-size: 12px; word-wrap: break-word; overflow: hidden; }
 th { background: #007bff; color: white; font-size: 11px; }
@@ -185,15 +67,13 @@ th { background: #007bff; color: white; font-size: 11px; }
 .blue { background: #007bff !important; color: white; border: none; padding: 5px 8px; border-radius: 4px; font-size: 11px; }
 .green { background: #28a745 !important; color: white; border: none; padding: 5px 8px; border-radius: 4px; font-size: 11px; }
 
-/* BILL SHEET */
-.bill-sheet { background: white; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); width: 100%; max-width: 100%; box-sizing: border-box; overflow-x: hidden; }
+.bill-sheet { background: white; border-radius: 10px; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; overflow-x: hidden; }
 .bill-header-shop { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
 .shop-title { font-size: 16px; font-weight: bold; color: #007bff; word-break: break-word; }
 .shop-sub { font-size: 11px; color: #666; margin-top: 3px; }
 .bill-no { font-size: 14px; font-weight: bold; color: #333; }
 .bill-no small { font-size: 11px; color: #888; display: block; }
 
-/* NAME FIELD */
 .bill-info-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0; border-bottom: 1px dashed #ddd; width: 100%; box-sizing: border-box; align-items: center; }
 .bill-info-row label { font-weight: bold; color: #333; font-size: 13px; flex: 0 0 auto; }
 .name-wrapper { position: relative; flex: 1 1 150px; min-width: 0; }
@@ -208,7 +88,6 @@ th { background: #007bff; color: white; font-size: 11px; }
 
 .view-bills-btn { background: linear-gradient(135deg, #007bff, #0056b3); color: white; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; flex-shrink: 0; }
 
-/* ITEMS TABLE IN BILL */
 .bill-table { width: 100%; max-width: 100%; border-collapse: collapse; margin: 10px 0; border: 2px solid #333; table-layout: fixed; box-sizing: border-box; }
 .bill-table th { background: #007bff; color: white; padding: 7px 4px; font-size: 11px; text-align: left; border: 1px solid #333; }
 .bill-table td { padding: 6px 4px; border: 1px solid #ccc; font-size: 12px; background: white; word-break: break-word; overflow: hidden; }
@@ -217,12 +96,10 @@ th { background: #007bff; color: white; font-size: 11px; }
 .bill-table tr td:nth-child(3) { width: 20%; }
 .bill-table tr td:nth-child(4) { width: 20%; }
 
-/* ADD ITEM ROW */
 .add-item-row { display: flex; flex-wrap: wrap; gap: 5px; width: 100%; box-sizing: border-box; }
 .add-item-row input, .add-item-row select { flex: 1 1 80px; min-width: 0; padding: 9px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; box-sizing: border-box; }
 .add-item-row button { padding: 9px 14px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; flex-shrink: 0; }
 
-/* TOTALS */
 .bill-total-row { display: flex; justify-content: space-between; padding: 10px; background: #f0f7ff; border: 2px solid #007bff; border-radius: 6px; margin-top: 8px; font-size: 15px; font-weight: bold; color: #007bff; width: 100%; box-sizing: border-box; }
 .balance-box { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 12px; margin-top: 10px; width: 100%; box-sizing: border-box; }
 .balance-box .row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; flex-wrap: wrap; gap: 5px; align-items: center; }
@@ -234,7 +111,6 @@ th { background: #007bff; color: white; font-size: 11px; }
 .bill-actions { display: flex; gap: 8px; margin-top: 12px; width: 100%; box-sizing: border-box; }
 .bill-actions button { flex: 1; min-width: 0; }
 
-/* CUSTOMER ITEMS */
 .customer-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; flex-wrap: wrap; }
 .customer-item .info { flex: 1 1 150px; min-width: 0; cursor: pointer; }
 .customer-item .name { font-weight: bold; color: #007bff; font-size: 14px; text-decoration: underline; word-break: break-word; }
@@ -243,7 +119,6 @@ th { background: #007bff; color: white; font-size: 11px; }
 .balance-red { color: #dc3545; }
 .balance-green { color: #28a745; }
 
-/* BILLS PAGE */
 .bills-page-header { background: white; padding: 15px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); width: 100%; box-sizing: border-box; }
 .bills-page-header h2 { color: #007bff; margin-bottom: 5px; font-size: 16px; }
 .bills-page-header .phone { color: #888; font-size: 12px; }
@@ -265,18 +140,15 @@ th { background: #007bff; color: white; font-size: 11px; }
 
 .empty-state { text-align: center; padding: 40px 20px; color: #888; font-size: 14px; }
 
-/* SETTINGS */
 .settings-box { background: white; padding: 18px; border-radius: 12px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
 .settings-box label { display: block; font-size: 12px; font-weight: bold; color: #555; margin-bottom: 5px; margin-top: 12px; }
-.settings-box input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; box-sizing: border-box; }
+.settings-box input, .settings-box select, .settings-box textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; box-sizing: border-box; font-family: Arial, sans-serif; }
 
-/* DASHBOARD */
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; width: 100%; box-sizing: border-box; }
 .stat-card { background: white; padding: 15px 10px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .stat-card .num { font-size: 18px; font-weight: bold; color: #007bff; word-break: break-word; }
 .stat-card .label { font-size: 11px; color: #666; margin-top: 4px; }
 
-/* PRINT */
 @media print {
   body * { visibility: hidden; }
   #printArea, #printArea * { visibility: visible; }
@@ -339,11 +211,11 @@ th { background: #007bff; color: white; font-size: 11px; }
     <button onclick="openTab('dashboard')" class="active">📊 Home</button>
     <button onclick="openTab('billing')">🧾 Bill</button>
     <button onclick="openTab('items')">📦 Items</button>
+    <button onclick="openTab('stock')">📥 Stock</button>
     <button onclick="openTab('customers')">👥 Customers</button>
     <button onclick="openTab('settings')">⚙️ Settings</button>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="dashboard" class="section active">
     <h2>Aaj ka Hisaab</h2>
     <div class="stats">
@@ -356,7 +228,6 @@ th { background: #007bff; color: white; font-size: 11px; }
     <div id="lowStockList"></div>
   </div>
 
-  <!-- BILLING -->
   <div id="billing" class="section">
     <div class="bill-sheet">
       <div class="bill-header-shop">
@@ -385,12 +256,7 @@ th { background: #007bff; color: white; font-size: 11px; }
 
       <table class="bill-table">
         <thead>
-          <tr>
-            <th>Qty</th>
-            <th>Particulars</th>
-            <th>Rate</th>
-            <th>Amount</th>
-          </tr>
+          <tr><th>Qty</th><th>Particulars</th><th>Rate</th><th>Amount</th></tr>
         </thead>
         <tbody id="billTableBody"></tbody>
       </table>
@@ -429,7 +295,6 @@ th { background: #007bff; color: white; font-size: 11px; }
     </div>
   </div>
 
-  <!-- ITEMS -->
   <div id="items" class="section">
     <h2>📦 Items List</h2>
     <p style="font-size:12px; color:#666; margin-bottom:10px;">💡 Rate yahan set karo — bill mein automatic aayega</p>
@@ -442,7 +307,7 @@ th { background: #007bff; color: white; font-size: 11px; }
         <option value="litre">Litre</option>
         <option value="packet">Packet</option>
       </select>
-      <input type="number" id="newItemStock" placeholder="Stock" step="0.01" style="flex:1 1 80px;">
+      <input type="number" id="newItemStock" placeholder="Opening Stock" step="0.01" style="flex:1 1 80px;">
       <button onclick="saveItem()">💾 Save</button>
     </div>
     <table>
@@ -451,7 +316,41 @@ th { background: #007bff; color: white; font-size: 11px; }
     </table>
   </div>
 
-  <!-- CUSTOMERS -->
+  <div id="stock" class="section">
+    <h2>📥 Naya Stock Aaya</h2>
+    <p style="font-size:12px; color:#666; margin-bottom:10px;">💡 Stock aane ka poora record rakho</p>
+    
+    <div class="settings-box">
+      <label>📦 Item Select Karo</label>
+      <select id="stockItem">
+        <option value="">-- Item Select Karo --</option>
+      </select>
+      
+      <label>📊 Kitna Stock Aaya? (Quantity)</label>
+      <input type="number" id="stockQty" placeholder="e.g. 100" step="0.01">
+      
+      <label>💰 Purchase Rate (Rs)</label>
+      <input type="number" id="stockRate" placeholder="e.g. 250" step="0.01">
+      
+      <label>👤 Supplier / Party ka Naam</label>
+      <input id="stockSupplier" placeholder="e.g. Karachi Traders">
+      
+      <label>🧾 Bill Number</label>
+      <input id="stockBillNo" placeholder="e.g. 1234">
+      
+      <label>📅 Date</label>
+      <input type="date" id="stockDate">
+      
+      <label>📝 Note (Optional)</label>
+      <input id="stockNote" placeholder="Koi note likho...">
+      
+      <button class="primary-btn" onclick="saveStockEntry()" style="background:#28a745;">💾 Stock Add Karo</button>
+    </div>
+    
+    <h2 style="margin-top:20px;">📜 Stock History</h2>
+    <div id="stockHistoryList"></div>
+  </div>
+
   <div id="customers" class="section">
     <h2>👥 Customers</h2>
     <div class="input-row">
@@ -462,7 +361,6 @@ th { background: #007bff; color: white; font-size: 11px; }
     <div id="customersList"></div>
   </div>
 
-  <!-- CUSTOMER BILLS PAGE -->
   <div id="customerBillsPage" class="section">
     <button class="blue" onclick="backToCustomers()" style="margin-bottom:10px;">← واپس</button>
     <div class="bills-page-header">
@@ -478,7 +376,6 @@ th { background: #007bff; color: white; font-size: 11px; }
     <div id="cbpBillsList"></div>
   </div>
 
-  <!-- SETTINGS -->
   <div id="settings" class="section">
     <h2>⚙️ Shop Settings</h2>
     <div class="settings-box">
@@ -519,6 +416,7 @@ let currentUser = null;
 let items = [];
 let customers = [];
 let bills = [];
+let stockEntries = [];
 let settings = { shopName: 'Meri Dukan', shopSub: 'Deals in All Kinds', address: '', phone: '', slipFooter: 'Shukriya!' };
 let currentBill = [];
 let selectedCustomer = null;
@@ -530,7 +428,7 @@ async function saveUserData() {
     await setDoc(doc(db, "shops", currentUser.username), {
       username: currentUser.username,
       shopName: settings.shopName,
-      items, customers, bills, settings, billCounter,
+      items, customers, bills, stockEntries, settings, billCounter,
       updatedAt: new Date().toISOString()
     }, { merge: true });
   } catch (e) { console.error(e); }
@@ -556,8 +454,8 @@ window.doSignup = async () => {
     if (ex.exists()) { alert('Username mojood hai!'); btn.disabled = false; btn.textContent = '✅ Sign Up'; return; }
     currentUser = { username: user, shopName: shop };
     settings.shopName = shop;
-    items = []; customers = []; bills = []; billCounter = 1;
-    await setDoc(ref, { username: user, password: pass, shopName: shop, items: [], customers: [], bills: [], settings, billCounter: 1 });
+    items = []; customers = []; bills = []; stockEntries = []; billCounter = 1;
+    await setDoc(ref, { username: user, password: pass, shopName: shop, items: [], customers: [], bills: [], stockEntries: [], settings, billCounter: 1 });
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
     alert('✅ Account ban gaya!');
     enterApp();
@@ -578,6 +476,7 @@ window.doLogin = async () => {
     items = data.items || [];
     customers = data.customers || [];
     bills = data.bills || [];
+    stockEntries = data.stockEntries || [];
     settings = data.settings || settings;
     billCounter = data.billCounter || 1;
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -622,6 +521,9 @@ function renderAll() {
   renderItems();
   renderCustomers();
   renderItemNamesList();
+  renderStockItemDropdown();
+  renderStockHistory();
+  setStockDateDefault();
 }
 
 function renderDashboard() {
@@ -646,7 +548,7 @@ function renderItems() {
   tb.innerHTML = '';
   items.forEach((item, i) => {
     const low = item.stock < 5 ? 'style="color:#dc3545;font-weight:bold;"' : '';
-    tb.innerHTML += `<tr><td>${item.name}</td><td>Rs ${item.rate}</td><td ${low}>${item.stock} ${item.unit}</td><td><button class="blue" onclick="editStock(${i})">➕</button> <button class="danger" onclick="deleteItem(${i})">X</button></td></tr>`;
+    tb.innerHTML += `<tr><td>${item.name}</td><td>Rs ${item.rate}</td><td ${low}>${item.stock} ${item.unit}</td><td><button class="danger" onclick="deleteItem(${i})">X</button></td></tr>`;
   });
 }
 
@@ -763,10 +665,8 @@ window.addBillItem = () => {
   const name = document.getElementById('newParticular').value.trim();
   if (!name) return alert('Item ka naam likho!');
   if (isNaN(qty) || qty <= 0) return alert('Qty sahi likho!');
-  
   const found = items.find(i => i.name.toLowerCase() === name.toLowerCase());
   if (!found) return alert('❌ Ye item list mein nahi hai. Pehle "📦 Items" tab mein add karo.');
-  
   currentBill.push({ name: found.name, qty, rate: found.rate, unit: found.unit, total: qty * found.rate });
   document.getElementById('newQty').value = '';
   document.getElementById('newParticular').value = '';
@@ -968,16 +868,6 @@ window.saveItem = async () => {
   alert('✅ Save ho gaya!');
 };
 
-window.editStock = async (i) => {
-  const add = prompt(`${items[i].name} ka naya stock?`, '0');
-  if (add === null) return;
-  const qty = parseFloat(add);
-  if (isNaN(qty) || qty <= 0) return;
-  items[i].stock += qty;
-  await saveUserData();
-  renderAll();
-};
-
 window.deleteItem = async (i) => {
   if (!confirm('Delete?')) return;
   items.splice(i, 1);
@@ -1019,7 +909,108 @@ window.saveSettings = async () => {
   alert('✅ Save!');
 };
 
-// BROWSER NAVIGATION
+// ============ STOCK MANAGEMENT ============
+window.saveStockEntry = async () => {
+  const itemName = document.getElementById('stockItem').value;
+  const qty = parseFloat(document.getElementById('stockQty').value);
+  const rate = parseFloat(document.getElementById('stockRate').value) || 0;
+  const supplier = document.getElementById('stockSupplier').value.trim();
+  const billNo = document.getElementById('stockBillNo').value.trim();
+  const date = document.getElementById('stockDate').value || new Date().toISOString().split('T')[0];
+  const note = document.getElementById('stockNote').value.trim();
+  if (!itemName) return alert('Item select karo!');
+  if (isNaN(qty) || qty <= 0) return alert('Quantity sahi likho!');
+  const itemIdx = items.findIndex(i => i.name === itemName);
+  if (itemIdx === -1) return alert('Item nahi mila!');
+  const entry = {
+    id: Date.now(), itemName, qty, rate, total: qty * rate,
+    supplier, billNo, date, note, addedAt: new Date().toISOString()
+  };
+  stockEntries.push(entry);
+  items[itemIdx].stock = (items[itemIdx].stock || 0) + qty;
+  await saveUserData();
+  document.getElementById('stockItem').value = '';
+  document.getElementById('stockQty').value = '';
+  document.getElementById('stockRate').value = '';
+  document.getElementById('stockSupplier').value = '';
+  document.getElementById('stockBillNo').value = '';
+  document.getElementById('stockDate').value = '';
+  document.getElementById('stockNote').value = '';
+  renderStockHistory();
+  renderItems();
+  renderStockItemDropdown();
+  renderDashboard();
+  alert('✅ Stock add ho gaya! ' + itemName + ' mein ' + qty + ' add kiye.');
+};
+
+function renderStockItemDropdown() {
+  const sel = document.getElementById('stockItem');
+  if (!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">-- Item Select Karo --</option>';
+  items.forEach(i => {
+    sel.innerHTML += `<option value="${i.name}">${i.name} (Current: ${i.stock} ${i.unit})</option>`;
+  });
+  if (current) sel.value = current;
+}
+
+function renderStockHistory() {
+  const list = document.getElementById('stockHistoryList');
+  if (!list) return;
+  if (stockEntries.length === 0) {
+    list.innerHTML = '<p style="color:#666; font-size:13px; text-align:center; padding:20px;">Abhi tak koi stock entry nahi</p>';
+    return;
+  }
+  list.innerHTML = '';
+  stockEntries.slice().reverse().forEach(e => {
+    const dateStr = new Date(e.date).toLocaleDateString();
+    list.innerHTML += `
+      <div class="bill-card-item">
+        <div class="top-row">
+          <span class="bill-id">${e.itemName}</span>
+          <span class="bill-date-lbl">📅 ${dateStr}</span>
+        </div>
+        <div class="items-list">
+          📊 Quantity: <b>${e.qty}</b><br>
+          💰 Rate: Rs ${e.rate} | Total: Rs ${e.total.toFixed(2)}<br>
+          ${e.supplier ? '👤 Supplier: ' + e.supplier + '<br>' : ''}
+          ${e.billNo ? '🧾 Bill No: ' + e.billNo + '<br>' : ''}
+          ${e.note ? '📝 ' + e.note : ''}
+        </div>
+        <div class="bottom-row">
+          <button class="danger" style="padding:5px 10px; font-size:11px;" onclick="deleteStockEntry(${e.id})">🗑️ Delete</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+window.deleteStockEntry = async (id) => {
+  const entry = stockEntries.find(e => e.id === id);
+  if (!entry) return;
+  if (!confirm(`⚠️ "${entry.itemName}" ki ${entry.qty} stock entry delete karni hai?`)) return;
+  const itemIdx = items.findIndex(i => i.name === entry.itemName);
+  if (itemIdx > -1) {
+    items[itemIdx].stock = Math.max(0, (items[itemIdx].stock || 0) - entry.qty);
+  }
+  stockEntries = stockEntries.filter(e => e.id !== id);
+  await saveUserData();
+  renderStockHistory();
+  renderItems();
+  renderStockItemDropdown();
+  renderDashboard();
+  alert('✅ Entry delete ho gayi!');
+};
+
+function setStockDateDefault() {
+  const dateInput = document.getElementById('stockDate');
+  if (dateInput && !dateInput.value) {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+  }
+}
+
+// ============ BROWSER NAVIGATION ============
 let tabs = [];
 let activeTabId = null;
 let tabCounter = 0;
@@ -1028,6 +1019,7 @@ const PAGES = {
   dashboard: { title: '📊 Home' },
   billing: { title: '🧾 Bill' },
   items: { title: '📦 Items' },
+  stock: { title: '📥 Stock' },
   customers: { title: '👥 Customers' },
   settings: { title: '⚙️ Settings' },
   customerBills: { title: '📜 Bills' }
@@ -1089,6 +1081,7 @@ function loadPage(tab) {
   if (navBtn) navBtn.classList.add('active');
   if (tab.pageId === 'dashboard') renderDashboard();
   if (tab.pageId === 'items') renderItems();
+  if (tab.pageId === 'stock') { renderStockItemDropdown(); renderStockHistory(); setStockDateDefault(); }
   if (tab.pageId === 'customers') renderCustomers();
   if (tab.pageId === 'billing') updateBillHeader();
   if (tab.pageId === 'customerBills' && tab.extra?.customerId !== undefined) {
@@ -1134,6 +1127,7 @@ window.viewCustomerBills = () => {
 
 window.backToCustomers = () => closeCurrentTab();
 
+// ============ INIT ============
 async function autoLogin() {
   const saved = JSON.parse(localStorage.getItem('currentUser'));
   document.getElementById('loading').style.display = 'none';
@@ -1146,6 +1140,7 @@ async function autoLogin() {
         items = data.items || [];
         customers = data.customers || [];
         bills = data.bills || [];
+        stockEntries = data.stockEntries || [];
         settings = data.settings || settings;
         billCounter = data.billCounter || 1;
         enterApp();
