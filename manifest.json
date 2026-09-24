@@ -4,13 +4,16 @@
   "description": "Complete shop billing app with inventory, customer ledger, stock management and cloud sync. Perfect for shops, stores and businesses.",
   "start_url": "/Shopvana/",
   "scope": "/Shopvana/",
+  "id": "/Shopvana/",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
   "orientation": "portrait",
   "background_color": "#007bff",
   "theme_color": "#007bff",
   "lang": "en",
   "dir": "ltr",
   "categories": ["business", "productivity", "finance"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",
@@ -37,24 +40,57 @@
       "purpose": "maskable"
     }
   ],
+  "screenshots": [
+    {
+      "src": "Screenshot2.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Home Dashboard"
+    },
+    {
+      "src": "Screenshot3.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Bill Creation"
+    },
+    {
+      "src": "Screenshot4.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Items Management"
+    },
+    {
+      "src": "Screenshot5.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Customer Ledger"
+    }
+  ],
   "shortcuts": [
     {
       "name": "Naya Bill",
       "short_name": "Bill",
-      "url": "/Shopvana/?page=billing",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "description": "Naya bill banao",
+      "url": "/Shopvana/",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Items List",
       "short_name": "Items",
-      "url": "/Shopvana/?page=items",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "description": "Items manage karo",
+      "url": "/Shopvana/",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Stock Entry",
       "short_name": "Stock",
-      "url": "/Shopvana/?page=stock",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "description": "Naya stock add karo",
+      "url": "/Shopvana/",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
