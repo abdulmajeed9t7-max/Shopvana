@@ -3,37 +3,370 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop Billing App</title>
-<link rel="stylesheet" href="style.css">
+<title>Shop Manager Pro</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#007bff">
-<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+body { background: #f0f2f5; padding: 10px; min-height: 100vh; }
+
+.auth-screen { display: flex; align-items: center; justify-content: center; min-height: 90vh; }
+.auth-box { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); width: 100%; max-width: 380px; }
+.auth-box h1 { text-align: center; margin-bottom: 5px; color: #007bff; }
+.subtitle { text-align: center; color: #888; margin-bottom: 20px; font-size: 13px; }
+.auth-tabs { display: flex; gap: 5px; margin-bottom: 20px; background: #f0f2f5; padding: 5px; border-radius: 10px; }
+.auth-tabs button { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 8px; font-weight: bold; color: #666; }
+.auth-tabs button.active { background: #007bff; color: white; }
+.auth-box input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+.primary-btn { width: 100%; padding: 13px; background: #007bff; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; margin-top: 5px; }
+
+.header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.header h2 { font-size: 16px; color: #007bff; }
+.logout-btn { padding: 7px 12px; background: #dc3545; color: white; border: none; border-radius: 6px; font-size: 12px; font-weight: bold; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 12px; overflow-x: auto; }
+.tabs button { flex: 1; min-width: 70px; padding: 10px 5px; border: none; background: #ddd; border-radius: 8px; font-size: 12px; font-weight: bold; white-space: nowrap; }
+.tabs button.active { background: #007bff; color: white; }
+
+.section { display: none; }
+.section.active { display: block; }
+h2 { margin-bottom: 10px; color: #333; font-size: 17px; }
+
+.input-row { display: flex; gap: 5px; margin-bottom: 12px; flex-wrap: wrap; }
+.input-row input, .input-row select { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; min-width: 80px; font-size: 14px; }
+.input-row button { padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; }
+
+table { width: 100%; background: white; border-collapse: collapse; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+th, td { padding: 9px 6px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; }
+th { background: #007bff; color: white; font-size: 12px; }
+
+.danger { background: #dc3545 !important; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 12px; }
+.blue { background: #007bff !important; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 12px; }
+.green { background: #28a745 !important; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 12px; }
+
+/* BILL STYLE */
+.bill-sheet {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.bill-header-shop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.shop-title { font-size: 18px; font-weight: bold; color: #007bff; }
+.shop-sub { font-size: 11px; color: #666; margin-top: 3px; }
+.bill-no { font-size: 16px; font-weight: bold; color: #333; }
+.bill-no small { font-size: 11px; color: #888; display: block; }
+
+.bill-info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #ddd;
+  align-items: center;
+  gap: 8px;
+}
+.bill-info-row label {
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+}
+.bill-info-row input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.name-wrapper {
+  position: relative;
+  flex: 1;
+}
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: none;
+}
+.autocomplete-list.show { display: block; }
+.autocomplete-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+.autocomplete-item:hover, .autocomplete-item.active {
+  background: #e7f3ff;
+}
+.autocomplete-item .cname { font-weight: bold; color: #333; }
+.autocomplete-item .cbal { font-size: 12px; color: #dc3545; margin-top: 2px; }
+.autocomplete-item.new-cust {
+  background: #f0fff4;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  border: 2px solid #333;
+}
+.bill-table th {
+  background: #007bff;
+  color: white;
+  padding: 8px 5px;
+  font-size: 12px;
+  text-align: left;
+  border: 1px solid #333;
+}
+.bill-table td {
+  padding: 6px 4px;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  background: white;
+}
+.bill-table input {
+  width: 100%;
+  border: none;
+  padding: 6px 4px;
+  font-size: 13px;
+  background: transparent;
+  outline: none;
+}
+.bill-table input:focus {
+  background: #fffde7;
+}
+
+.bill-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: #f0f7ff;
+  border: 2px solid #007bff;
+  border-radius: 6px;
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.balance-box {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
+}
+.balance-box .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 14px;
+}
+.balance-box .row.total {
+  border-top: 2px dashed #ffc107;
+  margin-top: 6px;
+  padding-top: 8px;
+  font-weight: bold;
+  font-size: 16px;
+}
+.balance-box input {
+  width: 120px;
+  padding: 6px;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  text-align: right;
+  font-size: 14px;
+}
+.final-balance {
+  background: #dc3545;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  font-weight: bold;
+}
+.final-balance.paid { background: #28a745; }
+
+.view-bills-btn {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* CUSTOMER BILLS PAGE */
+.bills-page-header {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.bills-page-header h2 { color: #007bff; margin-bottom: 5px; }
+.bills-page-header .phone { color: #888; font-size: 13px; }
+
+.bills-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.bills-summary .box {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+.bills-summary .box .num {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+}
+.bills-summary .box .lbl {
+  font-size: 11px;
+  color: #666;
+  margin-top: 3px;
+}
+.bills-summary .box.red .num { color: #dc3545; }
+.bills-summary .box.green .num { color: #28a745; }
+
+.bill-card-item {
+  background: white;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.bill-card-item .top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.bill-card-item .bill-id {
+  background: #007bff;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.bill-card-item .bill-date-lbl {
+  font-size: 12px;
+  color: #666;
+}
+.bill-card-item .items-list {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #444;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+.bill-card-item .bottom-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding-top: 8px;
+  border-top: 1px dashed #ddd;
+}
+.bill-card-item .bottom-row .paid { color: #28a745; font-weight: bold; }
+.bill-card-item .bottom-row .bal { color: #dc3545; font-weight: bold; }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+  font-size: 14px;
+}
+
+/* SETTINGS */
+.settings-box { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; }
+.settings-box label { display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 5px; margin-top: 12px; }
+.settings-box input { width: 100%; padding: 11px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+
+/* PRINT */
+@media print {
+  body * { visibility: hidden; }
+  #printArea, #printArea * { visibility: visible; }
+  #printArea { position: absolute; top: 0; left: 0; width: 100%; padding: 10px; }
+}
+.slip { font-family: 'Courier New', monospace; max-width: 320px; margin: auto; padding: 10px; border: 1px dashed #000; font-size: 13px; }
+.slip h3 { text-align: center; margin-bottom: 3px; }
+.slip .info { text-align: center; font-size: 11px; margin-bottom: 8px; }
+.slip .line { border-top: 1px dashed #000; margin: 6px 0; }
+.slip table { width: 100%; font-size: 12px; background: none; }
+.slip th, .slip td { padding: 3px; border: none; text-align: left; background: none; color: #000; }
+
+.loading-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; color: #007bff; }
+.spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top-color: #007bff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.customer-item { background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.customer-item .info { flex: 1; cursor: pointer; }
+.customer-item .name { font-weight: bold; color: #007bff; font-size: 15px; text-decoration: underline; }
+.customer-item .phone { font-size: 12px; color: #888; }
+.customer-item .balance { font-weight: bold; }
+.balance-red { color: #dc3545; }
+.balance-green { color: #28a745; }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.stat-card { background: white; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.stat-card .num { font-size: 22px; font-weight: bold; color: #007bff; }
+.stat-card .label { font-size: 12px; color: #666; margin-top: 4px; }
+</style>
 </head>
 <body>
 
-<!-- ============ LOADING ============ -->
 <div id="loading" class="loading-screen">
   <div class="spinner"></div>
   <p>Loading...</p>
 </div>
 
-<!-- ============ LOGIN SCREEN ============ -->
+<!-- LOGIN -->
 <div id="loginScreen" class="auth-screen" style="display:none;">
   <div class="auth-box">
-    <h1>🏪 Shop App</h1>
-    <p class="subtitle">Apni shop manage karo</p>
-
+    <h1>🏪 Shop Manager Pro</h1>
+    <p class="subtitle">Apni dukan ka poora hisaab</p>
     <div class="auth-tabs">
       <button id="loginTabBtn" class="active" onclick="switchAuth('login')">Login</button>
       <button id="signupTabBtn" onclick="switchAuth('signup')">Sign Up</button>
     </div>
-
     <div id="loginForm">
       <input id="loginUser" placeholder="Username">
       <input id="loginPass" type="password" placeholder="Password">
       <button class="primary-btn" onclick="doLogin()">🔓 Login</button>
     </div>
-
     <div id="signupForm" style="display:none;">
       <input id="signupShop" placeholder="Shop ka naam">
       <input id="signupUser" placeholder="Username">
@@ -43,87 +376,814 @@
   </div>
 </div>
 
-<!-- ============ MAIN APP ============ -->
+<!-- MAIN APP -->
 <div id="mainApp" style="display:none;">
-
   <div class="header">
-    <h2 id="headerShopName">🏪 Meri Shop</h2>
+    <h2 id="headerShopName">🏪 Meri Dukan</h2>
     <button class="logout-btn" onclick="doLogout()">Logout</button>
   </div>
 
   <div class="tabs">
-    <button onclick="showTab('billing')" class="active">🧾 Billing</button>
+    <button onclick="showTab('dashboard')" class="active">📊 Home</button>
+    <button onclick="showTab('billing')">🧾 Bill</button>
     <button onclick="showTab('items')">📦 Items</button>
-    <button onclick="showTab('settings')">⚙️ Settings</button>
+    <button onclick="showTab('customers')">👥</button>
+    <button onclick="showTab('settings')">⚙️</button>
   </div>
 
-  <div id="billing" class="section active">
-    <h2>Bill Banao</h2>
-    <div class="input-row">
-      <input list="itemList" id="itemName" placeholder="Item name likho...">
-      <datalist id="itemList"></datalist>
-      <input type="number" id="qty" placeholder="Qty" min="1" value="1">
-      <button onclick="addToBill()">➕ Add</button>
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="section active">
+    <h2>Aaj ka Hisaab</h2>
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="statTodaySale">Rs 0</div><div class="label">Aaj ki Sale</div></div>
+      <div class="stat-card"><div class="num" id="statTotalBakaya">Rs 0</div><div class="label">Total Bakaya</div></div>
+      <div class="stat-card"><div class="num" id="statTotalItems">0</div><div class="label">Items</div></div>
+      <div class="stat-card"><div class="num" id="statTotalCustomers">0</div><div class="label">Customers</div></div>
     </div>
-    <table id="billTable">
-      <thead>
-        <tr><th>Item</th><th>Rate</th><th>Qty</th><th>Total</th><th></th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <div class="grand-total">
-      <strong>Grand Total: Rs <span id="grandTotal">0</span></strong>
-    </div>
-    <div class="actions">
-      <button onclick="printBill()">🖨️ Print Slip</button>
-      <button onclick="clearBill()" class="danger">🗑️ Clear</button>
+    <h2 style="margin-top:15px;">⚠️ Low Stock</h2>
+    <div id="lowStockList"></div>
+  </div>
+
+  <!-- BILLING (Naya format) -->
+  <div id="billing" class="section">
+    <div class="bill-sheet">
+      <!-- BILL HEADER -->
+      <div class="bill-header-shop">
+        <div>
+          <div class="shop-title" id="billShopName">🏪 Meri Dukan</div>
+          <div class="shop-sub" id="billShopSub">Deals in All Kinds</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="bill-no">Bill #<span id="billNumber">0001</span></div>
+          <small style="color:#888;" id="billDate">--/--/--</small>
+        </div>
+      </div>
+
+      <!-- NAME FIELD WITH AUTOCOMPLETE -->
+      <div class="bill-info-row">
+        <label>Name:</label>
+        <div class="name-wrapper">
+          <input type="text" id="billCustomerName" placeholder="Customer ka naam likho..." autocomplete="off" oninput="onNameInput()" onfocus="onNameInput()">
+          <div class="autocomplete-list" id="autocompleteList"></div>
+        </div>
+        <button class="view-bills-btn" id="viewBillsBtn" style="display:none;" onclick="viewCustomerBills()">📜 Bills</button>
+      </div>
+
+      <!-- BALANCE ALERT -->
+      <div id="balanceAlert" style="display:none; background:#fff3cd; border:2px solid #ffc107; padding:10px; border-radius:8px; margin-top:10px; font-size:13px;">
+        ⚠️ <strong id="alertCustName">Customer</strong> ka purana bakaya: <strong style="color:#dc3545;">Rs <span id="prevBalance">0</span></strong>
+      </div>
+
+      <!-- ITEMS TABLE -->
+      <table class="bill-table" style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th style="width:15%;">Qty</th>
+            <th style="width:45%;">Particulars</th>
+            <th style="width:20%;">Rate</th>
+            <th style="width:20%;">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="billTableBody"></tbody>
+      </table>
+
+      <!-- ADD ITEM ROW -->
+      <div style="display:flex; gap:5px; margin-bottom:10px;">
+        <input type="number" id="newQty" placeholder="Qty" step="0.01" style="flex:1; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <input type="text" id="newParticular" placeholder="Item name" list="itemNamesList" style="flex:2; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;" oninput="onItemNameInput()">
+        <datalist id="itemNamesList"></datalist>
+        <input type="number" id="newRate" placeholder="Rate" step="0.01" style="flex:1; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <button onclick="addBillItem()" style="padding:10px 15px; background:#28a745; color:white; border:none; border-radius:6px; font-weight:bold;">➕</button>
+      </div>
+
+      <!-- TOTAL -->
+      <div class="bill-total-row">
+        <span>Total Amount:</span>
+        <span>Rs <span id="billAmount">0</span></span>
+      </div>
+
+      <!-- BALANCE SECTION -->
+      <div class="balance-box">
+        <div class="row"><span>Aaj ka Bill:</span><span>Rs <span id="subTotal">0</span></span></div>
+        <div class="row"><span>Purana Bakaya:</span><span>Rs <span id="prevBalDisplay">0</span></span></div>
+        <div class="row total"><span>Total:</span><span>Rs <span id="grandTotal">0</span></span></div>
+        
+        <div class="row" style="margin-top:8px; align-items:center;">
+          <span>💰 Abhi Kitna Diya:</span>
+          <input type="number" id="paidAmount" placeholder="0" value="0" step="0.01" oninput="updateBillSummary()">
+        </div>
+      </div>
+
+      <!-- FINAL BALANCE -->
+      <div class="final-balance" id="finalBalanceBox">
+        <span>🔴 Naya Bakaya:</span>
+        <span>Rs <span id="newBalance">0</span></span>
+      </div>
+
+      <!-- BUTTONS -->
+      <div style="display:flex; gap:8px; margin-top:12px;">
+        <button class="primary-btn" style="background:#28a745; flex:1;" onclick="saveBill()">💾 Save & Print</button>
+        <button class="primary-btn" style="background:#dc3545; flex:1;" onclick="clearBill()">🗑️ Clear</button>
+      </div>
     </div>
   </div>
 
+  <!-- ITEMS -->
   <div id="items" class="section">
-    <h2>Items List</h2>
+    <h2>📦 Items List</h2>
     <div class="input-row">
       <input id="newItemName" placeholder="Item ka naam">
-      <input type="number" id="newItemRate" placeholder="Rate (Rs)">
+      <input type="number" id="newItemRate" placeholder="Rate (Rs)" step="0.01">
+      <select id="newItemUnit">
+        <option value="kg">Kg</option>
+        <option value="piece">Piece</option>
+        <option value="litre">Litre</option>
+        <option value="packet">Packet</option>
+      </select>
+      <input type="number" id="newItemStock" placeholder="Stock" step="0.01">
       <button onclick="saveItem()">💾 Save</button>
     </div>
-    <table id="itemsTable">
-      <thead>
-        <tr><th>Item</th><th>Rate</th><th></th></tr>
-      </thead>
-      <tbody></tbody>
+    <table>
+      <thead><tr><th>Item</th><th>Rate</th><th>Stock</th><th></th></tr></thead>
+      <tbody id="itemsTableBody"></tbody>
     </table>
   </div>
 
+  <!-- CUSTOMERS -->
+  <div id="customers" class="section">
+    <h2>👥 Customers</h2>
+    <div class="input-row">
+      <input id="newCustomerName" placeholder="Customer ka naam">
+      <input id="newCustomerPhone" placeholder="Phone number">
+      <button onclick="saveCustomer()">💾 Add</button>
+    </div>
+    <div id="customersList"></div>
+  </div>
+
+  <!-- CUSTOMER BILLS PAGE -->
+  <div id="customerBillsPage" class="section">
+    <button class="blue" onclick="backToCustomers()" style="margin-bottom:10px;">← واپس</button>
+    <div class="bills-page-header">
+      <h2 id="cbpName">👤 Customer</h2>
+      <p class="phone" id="cbpPhone">📞</p>
+      <div class="bills-summary">
+        <div class="box"><div class="num" id="cbpTotalBills">0</div><div class="lbl">Total Bills</div></div>
+        <div class="box green"><div class="num" id="cbpTotalPaid">Rs 0</div><div class="lbl">Total Jama</div></div>
+        <div class="box"><div class="num" id="cbpTotalPurchase">Rs 0</div><div class="lbl">Total Kharida</div></div>
+        <div class="box red"><div class="num" id="cbpBalance">Rs 0</div><div class="lbl">Bakaya</div></div>
+      </div>
+    </div>
+    <div id="cbpBillsList"></div>
+  </div>
+
+  <!-- SETTINGS -->
   <div id="settings" class="section">
     <h2>⚙️ Shop Settings</h2>
     <div class="settings-box">
       <label>🏪 Shop ka Naam</label>
-      <input id="setShopName" placeholder="Meri Shop">
+      <input id="setShopName" placeholder="Meri Dukan">
+      <label>📝 Sub Title</label>
+      <input id="setShopSub" placeholder="Deals in All Kinds">
       <label>📍 Address</label>
       <input id="setShopAddress" placeholder="Shop ka address">
-      <label>📞 Phone Number</label>
+      <label>📞 Phone</label>
       <input id="setShopPhone" placeholder="03xx-xxxxxxx">
-      <label>🧾 Slip Footer Message</label>
-      <input id="setSlipFooter" placeholder="Shukriya! Dobara aayen">
-      <button class="primary-btn" onclick="saveSettings()">💾 Settings Save Karo</button>
-    </div>
-    <div class="danger-box">
-      <h3>⚠️ Danger Zone</h3>
-      <button class="danger" onclick="resetAllData()">🗑️ Poora Data Delete Karo</button>
+      <label>🧾 Slip Footer</label>
+      <input id="setSlipFooter" placeholder="Shukriya!">
+      <button class="primary-btn" onclick="saveSettings()">💾 Save</button>
     </div>
   </div>
-
 </div>
 
 <div id="printArea" style="display:none;"></div>
 
-<script type="module" src="script.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/Shopvana/sw.js');
+const firebaseConfig = {
+  apiKey: "AIzaSyC3Y_HCqr3yTohx-UZJr4DiGZqPtI5yhmQ",
+  authDomain: "shopvana9t7.firebaseapp.com",
+  projectId: "shopvana9t7",
+  storageBucket: "shopvana9t7.firebasestorage.app",
+  messagingSenderId: "1014799100986",
+  appId: "1:1014799100986:web:1ed26542d4e1be028f9903"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let currentUser = null;
+let items = [];
+let customers = [];
+let bills = [];
+let settings = { shopName: 'Meri Dukan', shopSub: 'Deals in All Kinds', address: '', phone: '', slipFooter: 'Shukriya!' };
+let currentBill = [];
+let selectedCustomer = null;
+let billCounter = 1;
+let currentBillViewingCustomer = null;
+
+// ============ SAVE ============
+async function saveUserData() {
+  if (!currentUser) return;
+  try {
+    await setDoc(doc(db, "shops", currentUser.username), {
+      username: currentUser.username,
+      shopName: settings.shopName,
+      items, customers, bills, settings, billCounter,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+  } catch (e) { console.error(e); alert("Save error: " + e.message); }
 }
+
+// ============ AUTH ============
+window.switchAuth = (type) => {
+  document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+  document.getElementById('signupForm').style.display = type === 'signup' ? 'block' : 'none';
+  document.getElementById('loginTabBtn').classList.toggle('active', type === 'login');
+  document.getElementById('signupTabBtn').classList.toggle('active', type === 'signup');
+};
+
+window.doSignup = async () => {
+  const shop = document.getElementById('signupShop').value.trim();
+  const user = document.getElementById('signupUser').value.trim().toLowerCase();
+  const pass = document.getElementById('signupPass').value;
+  if (!shop || !user || !pass) return alert('Sab fields bharo!');
+  if (pass.length < 4) return alert('Password 4+ chars');
+  const btn = event.target; btn.disabled = true; btn.textContent = '⏳';
+  try {
+    const ref = doc(db, "shops", user);
+    const ex = await getDoc(ref);
+    if (ex.exists()) { alert('Username mojood hai!'); btn.disabled = false; btn.textContent = '✅ Sign Up'; return; }
+    currentUser = { username: user, shopName: shop };
+    settings.shopName = shop;
+    items = []; customers = []; bills = []; billCounter = 1;
+    await setDoc(ref, { username: user, password: pass, shopName: shop, items: [], customers: [], bills: [], settings, billCounter: 1 });
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    alert('✅ Account ban gaya!');
+    enterApp();
+  } catch (e) { alert(e.message); btn.disabled = false; btn.textContent = '✅ Sign Up'; }
+};
+
+window.doLogin = async () => {
+  const user = document.getElementById('loginUser').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPass').value;
+  if (!user || !pass) return alert('Dono bharo!');
+  const btn = event.target; btn.disabled = true; btn.textContent = '⏳';
+  try {
+    const snap = await getDoc(doc(db, "shops", user));
+    if (!snap.exists()) { alert('Username nahi mila!'); btn.disabled = false; btn.textContent = '🔓 Login'; return; }
+    const data = snap.data();
+    if (data.password !== pass) { alert('Galat password!'); btn.disabled = false; btn.textContent = '🔓 Login'; return; }
+    currentUser = { username: data.username, shopName: data.shopName };
+    items = data.items || [];
+    customers = data.customers || [];
+    bills = data.bills || [];
+    settings = data.settings || settings;
+    billCounter = data.billCounter || 1;
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    enterApp();
+  } catch (e) { alert(e.message); btn.disabled = false; btn.textContent = '🔓 Login'; }
+};
+
+window.doLogout = () => {
+  if (confirm('Logout?')) {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+};
+
+function enterApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('headerShopName').textContent = '🏪 ' + settings.shopName;
+  document.getElementById('setShopName').value = settings.shopName || '';
+  document.getElementById('setShopSub').value = settings.shopSub || '';
+  document.getElementById('setShopAddress').value = settings.address || '';
+  document.getElementById('setShopPhone').value = settings.phone || '';
+  document.getElementById('setSlipFooter').value = settings.slipFooter || '';
+  updateBillHeader();
+  renderAll();
+}
+
+function updateBillHeader() {
+  document.getElementById('billShopName').textContent = '🏪 ' + settings.shopName;
+  document.getElementById('billShopSub').textContent = settings.shopSub || 'Deals in All Kinds';
+  document.getElementById('billNumber').textContent = String(billCounter).padStart(4, '0');
+  const d = new Date();
+  document.getElementById('billDate').textContent = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+}
+
+// ============ TABS ============
+window.showTab = (id) => {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (event) event.target.classList.add('active');
+  if (id === 'billing') updateBillHeader();
+};
+
+// ============ RENDER ============
+function renderAll() {
+  renderDashboard();
+  renderItems();
+  renderCustomers();
+  renderItemNamesList();
+}
+
+function renderDashboard() {
+  const today = new Date().toDateString();
+  const todaySale = bills.filter(b => new Date(b.date).toDateString() === today).reduce((s, b) => s + (b.paid || 0), 0);
+  const totalBakaya = customers.reduce((s, c) => s + (c.balance || 0), 0);
+  document.getElementById('statTodaySale').textContent = 'Rs ' + todaySale;
+  document.getElementById('statTotalBakaya').textContent = 'Rs ' + totalBakaya;
+  document.getElementById('statTotalItems').textContent = items.length;
+  document.getElementById('statTotalCustomers').textContent = customers.length;
+  const low = items.filter(i => i.stock < 5);
+  const lowList = document.getElementById('lowStockList');
+  if (low.length === 0) {
+    lowList.innerHTML = '<p style="color:#666; font-size:13px;">Sab items ka stock theek hai ✅</p>';
+  } else {
+    lowList.innerHTML = low.map(i => `<div class="customer-item"><div class="info"><div class="name" style="text-decoration:none; cursor:default;">${i.name}</div><div class="phone">Stock: ${i.stock} ${i.unit}</div></div><span class="balance balance-red">Kam!</span></div>`).join('');
+  }
+}
+
+function renderItems() {
+  const tb = document.getElementById('itemsTableBody');
+  tb.innerHTML = '';
+  items.forEach((item, i) => {
+    const low = item.stock < 5 ? 'style="color:#dc3545;font-weight:bold;"' : '';
+    tb.innerHTML += `<tr><td>${item.name}</td><td>Rs ${item.rate}/${item.unit}</td><td ${low}>${item.stock} ${item.unit}</td><td><button class="blue" onclick="editStock(${i})">➕</button> <button class="danger" onclick="deleteItem(${i})">X</button></td></tr>`;
+  });
+}
+
+function renderItemNamesList() {
+  const dl = document.getElementById('itemNamesList');
+  dl.innerHTML = '';
+  items.forEach(i => dl.innerHTML += `<option value="${i.name}">`);
+}
+
+function renderCustomers() {
+  const list = document.getElementById('customersList');
+  list.innerHTML = '';
+  if (customers.length === 0) {
+    list.innerHTML = '<p style="color:#666;font-size:13px;">Koi customer nahi. Add karo!</p>';
+    return;
+  }
+  customers.forEach((c, i) => {
+    const balClass = c.balance > 0 ? 'balance-red' : 'balance-green';
+    list.innerHTML += `<div class="customer-item">
+      <div class="info" onclick="viewCustomerFromList(${i})">
+        <div class="name">👤 ${c.name}</div>
+        <div class="phone">📞 ${c.phone || 'N/A'}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="balance ${balClass}">Rs ${c.balance || 0}</div>
+        <button class="danger" onclick="deleteCustomer(${i})">X</button>
+      </div>
+    </div>`;
+  });
+}
+
+// ============ CUSTOMER AUTOCOMPLETE ============
+window.onNameInput = () => {
+  const input = document.getElementById('billCustomerName');
+  const list = document.getElementById('autocompleteList');
+  const query = input.value.trim().toLowerCase();
+  
+  if (query.length === 0) {
+    // Show all customers
+    showAutocompleteList(customers.map((c, i) => ({ ...c, idx: i })));
+    return;
+  }
+  
+  const matches = customers.map((c, i) => ({ ...c, idx: i })).filter(c => c.name.toLowerCase().includes(query));
+  showAutocompleteList(matches, query);
+};
+
+function showAutocompleteList(matches, query = '') {
+  const list = document.getElementById('autocompleteList');
+  list.innerHTML = '';
+  
+  if (matches.length === 0 && query.length > 0) {
+    list.innerHTML = `<div class="autocomplete-item new-cust" onclick="addNewCustomerFromBill('${query}')">➕ Naya Customer: "${query}"</div>`;
+    list.classList.add('show');
+    return;
+  }
+  
+  matches.forEach(c => {
+    const bal = c.balance > 0 ? `Bakaya: Rs ${c.balance}` : 'No Bakaya';
+    const color = c.balance > 0 ? '#dc3545' : '#28a745';
+    list.innerHTML += `<div class="autocomplete-item" onclick="selectCustomer(${c.idx})">
+      <div class="cname">👤 ${c.name}</div>
+      <div class="cbal" style="color:${color};">${bal}</div>
+    </div>`;
+  });
+  
+  if (query.length > 0 && matches.length > 0) {
+    const exact = matches.find(c => c.name.toLowerCase() === query);
+    if (!exact) {
+      list.innerHTML += `<div class="autocomplete-item new-cust" onclick="addNewCustomerFromBill('${query}')">➕ Naya Customer: "${query}"</div>`;
+    }
+  }
+  
+  list.classList.add('show');
+}
+
+window.selectCustomer = (idx) => {
+  const c = customers[idx];
+  selectedCustomer = c;
+  document.getElementById('billCustomerName').value = c.name;
+  document.getElementById('autocompleteList').classList.remove('show');
+  document.getElementById('viewBillsBtn').style.display = 'block';
+  
+  if (c.balance > 0) {
+    document.getElementById('alertCustName').textContent = c.name;
+    document.getElementById('prevBalance').textContent = c.balance;
+    document.getElementById('balanceAlert').style.display = 'block';
+  } else {
+    document.getElementById('balanceAlert').style.display = 'none';
+  }
+  
+  document.getElementById('prevBalDisplay').textContent = c.balance || 0;
+  updateBillSummary();
+};
+
+window.addNewCustomerFromBill = (name) => {
+  document.getElementById('autocompleteList').classList.remove('show');
+  document.getElementById('billCustomerName').value = name;
+  // Create new customer
+  const newCust = { name: name, phone: '', balance: 0, history: [] };
+  customers.push(newCust);
+  selectedCustomer = newCust;
+  document.getElementById('viewBillsBtn').style.display = 'block';
+  document.getElementById('prevBalDisplay').textContent = '0';
+  document.getElementById('balanceAlert').style.display = 'none';
+  updateBillSummary();
+};
+
+// Hide autocomplete on outside click
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.name-wrapper')) {
+    document.getElementById('autocompleteList').classList.remove('show');
+  }
+});
+
+window.onItemNameInput = () => {
+  const name = document.getElementById('newParticular').value.trim();
+  const found = items.find(i => i.name.toLowerCase() === name.toLowerCase());
+  if (found) {
+    document.getElementById('newRate').value = found.rate;
+  }
+};
+
+// ============ BILLING ============
+window.addBillItem = () => {
+  const qty = parseFloat(document.getElementById('newQty').value);
+  const name = document.getElementById('newParticular').value.trim();
+  const rate = parseFloat(document.getElementById('newRate').value);
+  
+  if (!name) return alert('Item ka naam likho!');
+  if (isNaN(qty) || qty <= 0) return alert('Qty sahi likho!');
+  if (isNaN(rate) || rate <= 0) return alert('Rate sahi likho!');
+  
+  currentBill.push({ name, qty, rate, total: qty * rate });
+  
+  document.getElementById('newQty').value = '';
+  document.getElementById('newParticular').value = '';
+  document.getElementById('newRate').value = '';
+  
+  renderBillTable();
+  updateBillSummary();
+};
+
+function renderBillTable() {
+  const tb = document.getElementById('billTableBody');
+  tb.innerHTML = '';
+  
+  currentBill.forEach((b, i) => {
+    tb.innerHTML += `<tr>
+      <td>${b.qty}</td>
+      <td>${b.name}</td>
+      <td>${b.rate}</td>
+      <td>${b.total.toFixed(2)} <button class="danger" style="float:right; padding:2px 6px; font-size:10px;" onclick="removeBillItem(${i})">X</button></td>
+    </tr>`;
+  });
+  
+  // Add 5 empty rows for look
+  for (let i = currentBill.length; i < 5; i++) {
+    tb.innerHTML += `<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>`;
+  }
+}
+
+window.removeBillItem = (i) => {
+  currentBill.splice(i, 1);
+  renderBillTable();
+  updateBillSummary();
+};
+
+window.updateBillSummary = () => {
+  const subtotal = currentBill.reduce((s, b) => s + b.total, 0);
+  const prevBal = selectedCustomer ? (selectedCustomer.balance || 0) : 0;
+  const total = subtotal + prevBal;
+  const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
+  const newBal = total - paid;
+  
+  document.getElementById('billAmount').textContent = subtotal.toFixed(2);
+  document.getElementById('subTotal').textContent = subtotal.toFixed(2);
+  document.getElementById('grandTotal').textContent = total.toFixed(2);
+  document.getElementById('newBalance').textContent = newBal.toFixed(2);
+  
+  const fbBox = document.getElementById('finalBalanceBox');
+  if (newBal <= 0) {
+    fbBox.classList.add('paid');
+    fbBox.innerHTML = `<span>✅ Sab Clear! Extra: Rs ${Math.abs(newBal).toFixed(2)}</span>`;
+  } else {
+    fbBox.classList.remove('paid');
+    fbBox.innerHTML = `<span>🔴 Naya Bakaya:</span><span>Rs ${newBal.toFixed(2)}</span>`;
+  }
+};
+
+window.saveBill = async () => {
+  const name = document.getElementById('billCustomerName').value.trim();
+  if (!name) return alert('Customer ka naam likho!');
+  if (currentBill.length === 0) return alert('Koi item add karo!');
+  
+  // Find or create customer
+  let cIdx = customers.findIndex(c => c.name.toLowerCase() === name.toLowerCase());
+  if (cIdx === -1) {
+    customers.push({ name: name, phone: '', balance: 0, history: [] });
+    cIdx = customers.length - 1;
+  }
+  
+  const subtotal = currentBill.reduce((s, b) => s + b.total, 0);
+  const prevBal = customers[cIdx].balance || 0;
+  const total = subtotal + prevBal;
+  const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
+  const newBal = total - paid;
+  
+  const billRecord = {
+    id: Date.now(),
+    billNo: billCounter,
+    date: new Date().toISOString(),
+    customerName: name,
+    items: JSON.parse(JSON.stringify(currentBill)),
+    subtotal, previousBalance: prevBal, total, paid, newBalance: newBal
+  };
+  
+  bills.push(billRecord);
+  billCounter++;
+  
+  customers[cIdx].balance = newBal;
+  if (!customers[cIdx].history) customers[cIdx].history = [];
+  customers[cIdx].history.push({
+    billNo: billRecord.billNo,
+    date: billRecord.date,
+    billTotal: total,
+    paid: paid,
+    items: JSON.parse(JSON.stringify(currentBill))
+  });
+  
+  // Reduce stock
+  currentBill.forEach(b => {
+    const iIdx = items.findIndex(i => i.name.toLowerCase() === b.name.toLowerCase());
+    if (iIdx > -1) items[iIdx].stock = Math.max(0, items[iIdx].stock - b.qty);
+  });
+  
+  await saveUserData();
+  printBill(billRecord);
+  alert('✅ Bill #' + billRecord.billNo + ' save ho gaya!');
+  clearBill();
+  renderAll();
+  updateBillHeader();
+};
+
+window.clearBill = () => {
+  currentBill = [];
+  selectedCustomer = null;
+  document.getElementById('billCustomerName').value = '';
+  document.getElementById('paidAmount').value = '0';
+  document.getElementById('balanceAlert').style.display = 'none';
+  document.getElementById('viewBillsBtn').style.display = 'none';
+  document.getElementById('prevBalDisplay').textContent = '0';
+  renderBillTable();
+  updateBillSummary();
+};
+
+function printBill(bill) {
+  let rows = '';
+  bill.items.forEach(it => {
+    rows += `<tr><td>${it.qty}</td><td>${it.name}</td><td>${it.rate}</td><td>${it.total.toFixed(2)}</td></tr>`;
+  });
+  
+  const html = `
+    <div class="slip">
+      <h3>🏪 ${settings.shopName}</h3>
+      <div class="info">
+        ${settings.shopSub ? settings.shopSub + '<br>' : ''}
+        ${settings.address ? settings.address + '<br>' : ''}
+        ${settings.phone ? '📞 ' + settings.phone + '<br>' : ''}
+      </div>
+      <div class="line"></div>
+      <p><b>Bill #:</b> ${String(bill.billNo).padStart(4, '0')} &nbsp;&nbsp; <b>Date:</b> ${new Date(bill.date).toLocaleDateString()}</p>
+      <p><b>Name:</b> ${bill.customerName}</p>
+      <div class="line"></div>
+      <table>
+        <tr><th>Qty</th><th>Particulars</th><th>Rate</th><th>Amount</th></tr>
+        ${rows}
+      </table>
+      <div class="line"></div>
+      <p style="text-align:right;">Aaj ka Bill: Rs ${bill.subtotal.toFixed(2)}</p>
+      ${bill.previousBalance > 0 ? `<p style="text-align:right;">Purana Bakaya: Rs ${bill.previousBalance.toFixed(2)}</p>` : ''}
+      <p style="text-align:right;"><b>Total: Rs ${bill.total.toFixed(2)}</b></p>
+      <p style="text-align:right;">Jama: Rs ${bill.paid.toFixed(2)}</p>
+      <p style="text-align:right;"><b>Bakaya: Rs ${bill.newBalance.toFixed(2)}</b></p>
+      <div class="line"></div>
+      <p style="text-align:center;font-size:11px;">${settings.slipFooter}</p>
+    </div>
+  `;
+  
+  document.getElementById('printArea').innerHTML = html;
+  document.getElementById('printArea').style.display = 'block';
+  window.print();
+  setTimeout(() => document.getElementById('printArea').style.display = 'none', 500);
+}
+
+// ============ VIEW CUSTOMER BILLS ============
+window.viewCustomerBills = () => {
+  if (selectedCustomer) {
+    const idx = customers.findIndex(c => c.name === selectedCustomer.name);
+    if (idx > -1) openCustomerBillsPage(idx);
+  }
+};
+
+window.viewCustomerFromList = (i) => {
+  openCustomerBillsPage(i);
+};
+
+function openCustomerBillsPage(i) {
+  const c = customers[i];
+  currentBillViewingCustomer = c;
+  
+  document.getElementById('cbpName').textContent = '👤 ' + c.name;
+  document.getElementById('cbpPhone').textContent = '📞 ' + (c.phone || 'N/A');
+  
+  const history = c.history || [];
+  const totalPurchase = history.reduce((s, h) => s + (h.billTotal || 0), 0);
+  const totalPaid = history.reduce((s, h) => s + (h.paid || 0), 0);
+  
+  document.getElementById('cbpTotalBills').textContent = history.length;
+  document.getElementById('cbpTotalPaid').textContent = 'Rs ' + totalPaid.toFixed(0);
+  document.getElementById('cbpTotalPurchase').textContent = 'Rs ' + totalPurchase.toFixed(0);
+  document.getElementById('cbpBalance').textContent = 'Rs ' + (c.balance || 0).toFixed(0);
+  
+  const list = document.getElementById('cbpBillsList');
+  if (history.length === 0) {
+    list.innerHTML = '<div class="empty-state">📭<br>Abhi tak koi bill nahi</div>';
+  } else {
+    list.innerHTML = '';
+    history.slice().reverse().forEach(h => {
+      let itemsHtml = '';
+      if (h.items && h.items.length > 0) {
+        itemsHtml = h.items.map(it => `• ${it.name} — ${it.qty} × Rs ${it.rate} = Rs ${it.total}`).join('<br>');
+      }
+      const date = new Date(h.date);
+      const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      const balance = h.billTotal - h.paid;
+      
+      list.innerHTML += `
+        <div class="bill-card-item">
+          <div class="top-row">
+            <span class="bill-id">Bill #${String(h.billNo).padStart(4, '0')}</span>
+            <span class="bill-date-lbl">📅 ${dateStr}</span>
+          </div>
+          <div class="items-list">${itemsHtml}</div>
+          <div class="bottom-row">
+            <span>Total: Rs ${h.billTotal.toFixed(2)}</span>
+            <span class="paid">✅ Jama: Rs ${h.paid.toFixed(2)}</span>
+            ${balance > 0 ? `<span class="bal">🔴 ${balance.toFixed(2)}</span>` : '<span style="color:#28a745; font-weight:bold;">✓ Clear</span>'}
+          </div>
+        </div>
+      `;
+    });
+  }
+  
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('customerBillsPage').classList.add('active');
+}
+
+window.backToCustomers = () => {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById('customers').classList.add('active');
+  renderCustomers();
+};
+
+// ============ ITEMS ============
+window.saveItem = async () => {
+  const name = document.getElementById('newItemName').value.trim();
+  const rate = parseFloat(document.getElementById('newItemRate').value);
+  const unit = document.getElementById('newItemUnit').value;
+  const stock = parseFloat(document.getElementById('newItemStock').value) || 0;
+  if (!name || isNaN(rate)) return alert('Naam aur rate bharo!');
+  const ex = items.findIndex(i => i.name.toLowerCase() === name.toLowerCase());
+  if (ex > -1) {
+    items[ex].rate = rate;
+    items[ex].unit = unit;
+    items[ex].stock += stock;
+  } else {
+    items.push({ name, rate, unit, stock });
+  }
+  document.getElementById('newItemName').value = '';
+  document.getElementById('newItemRate').value = '';
+  document.getElementById('newItemStock').value = '';
+  await saveUserData();
+  renderAll();
+  alert('✅ Save ho gaya!');
+};
+
+window.editStock = async (i) => {
+  const add = prompt(`${items[i].name} ka naya stock?`, '0');
+  if (add === null) return;
+  const qty = parseFloat(add);
+  if (isNaN(qty) || qty <= 0) return;
+  items[i].stock += qty;
+  await saveUserData();
+  renderAll();
+};
+
+window.deleteItem = async (i) => {
+  if (!confirm('Delete?')) return;
+  items.splice(i, 1);
+  await saveUserData();
+  renderAll();
+};
+
+// ============ CUSTOMERS ============
+window.saveCustomer = async () => {
+  const name = document.getElementById('newCustomerName').value.trim();
+  const phone = document.getElementById('newCustomerPhone').value.trim();
+  if (!name) return alert('Naam likho!');
+  if (customers.find(c => c.name.toLowerCase() === name.toLowerCase())) return alert('Customer mojood hai!');
+  customers.push({ name, phone, balance: 0, history: [] });
+  document.getElementById('newCustomerName').value = '';
+  document.getElementById('newCustomerPhone').value = '';
+  await saveUserData();
+  renderAll();
+  alert('✅ Customer add!');
+};
+
+window.deleteCustomer = async (i) => {
+  if (customers[i].balance > 0) {
+    if (!confirm(`⚠️ ${customers[i].name} ka Rs ${customers[i].balance} bakaya hai. Phir bhi delete?`)) return;
+  } else if (!confirm('Delete?')) return;
+  customers.splice(i, 1);
+  await saveUserData();
+  renderAll();
+};
+
+// ============ SETTINGS ============
+window.saveSettings = async () => {
+  settings.shopName = document.getElementById('setShopName').value.trim() || 'Meri Dukan';
+  settings.shopSub = document.getElementById('setShopSub').value.trim();
+  settings.address = document.getElementById('setShopAddress').value.trim();
+  settings.phone = document.getElementById('setShopPhone').value.trim();
+  settings.slipFooter = document.getElementById('setSlipFooter').value.trim();
+  document.getElementById('headerShopName').textContent = '🏪 ' + settings.shopName;
+  updateBillHeader();
+  await saveUserData();
+  alert('✅ Save!');
+};
+
+// ============ INIT ============
+async function autoLogin() {
+  const saved = JSON.parse(localStorage.getItem('currentUser'));
+  document.getElementById('loading').style.display = 'none';
+  if (saved) {
+    try {
+      const snap = await getDoc(doc(db, "shops", saved.username));
+      if (snap.exists()) {
+        const data = snap.data();
+        currentUser = { username: data.username, shopName: data.shopName };
+        items = data.items || [];
+        customers = data.customers || [];
+        bills = data.bills || [];
+        settings = data.settings || settings;
+        billCounter = data.billCounter || 1;
+        enterApp();
+        return;
+      }
+    } catch(e) { console.error(e); }
+  }
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+renderBillTable();
+updateBillSummary();
+autoLogin();
 </script>
 </body>
 </html>
